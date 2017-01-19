@@ -1,0 +1,53 @@
+swagger: '2.0'
+
+host: "log.analytics.mup-prod.mup.zone"
+
+schemes: [ http ]
+
+info:
+  version: "0.0.0"
+  title: Analytics Logging Service
+
+paths:
+  /log:
+    post:
+      description: Log an analytics record, in base64-encoded binary avro format
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/AvroRecord"
+      responses:
+        200:
+          description: Successful log submission
+          schema:
+            $ref: "#/definitions/SuccessMessage"
+                     
+definitions:
+  SuccessMessage:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+  AvroRecord:
+    required:
+      - name
+      - record
+      - kind
+      - version
+      - schemaUrl
+      - date
+    properties:
+      record:
+        type: string
+      name:
+        type: string
+      version:
+        type: integer
+        format: int64
+      schemaUrl:
+        type: string
+      date:
+        type: string
